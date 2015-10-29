@@ -1,7 +1,6 @@
 // note: method of putting elements to the DOM, button navigation of game and using checkX to run through functions in order was previously used when making http://game.mymesstheirkitchen.com/
 
-(function() {
-  'use strict';
+// can you refactor object look ups from if statements
 
 
 //variable x is checked frequently to run functions in the correct order
@@ -45,6 +44,34 @@ var moveRunners = function(batter, hitType){
   var second = baseRunners[1];
   var first= baseRunners[0];
   var totalRuns = 0;
+  if(hitType ==="Walk"){
+    if(first.position > 0){
+      if(second.position>0){
+        if(third.position>0){
+          batter.runs++;
+          totalRuns++;
+          baseRunners.pop();
+          baseRunners.unshift({position:1});
+          updateBaseDisplay();
+          updateOpponentScore();
+          updatePlayerScore();
+        }
+        else{
+          third.position = 1;
+          updateBaseDisplay();
+        }
+      }
+      else{
+        second.position = 1;
+        updateBaseDisplay();
+      }
+    }
+    else{
+      baseRunners.shift();
+      baseRunners.unshift({position:1});
+      updateBaseDisplay();
+    }
+  }
   if(hitType === "Single"){
     if(third.position > 0 ){
       batter.runs++;
@@ -902,4 +929,3 @@ var checkX = function(z){
   $(document).ready(function(){
     checkX(x);
   });
-}());
