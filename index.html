@@ -3,13 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Wiffleball Madness</title>
+    <link rel="stylesheet" href="styles.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body>
+  <section>
  <h1>WiffleBall Madness!!!!!</h1>
  <div id="text-area">Decisions, Decisions</div>
  <br><br>
- <div id="description">Describing object</div>
-
+ <div id="description"></div>
+</section>
+  <aside>
+    <h2 id="opponentName">Opponent:</h2><span id="opponentScore"></span><br>
+    <h2 id="playerName">Player:</h2><span id="playerScore"></span>
+    <ul>
+      <li><b>Balls</b>: <span id="balls"></span></li>
+      <li><b>Strikes</b>: <span id="strikes"></span></li>
+      <li><b>Outs</b>: <span id="outs"></span></li>
+      <li><b>Batting</b>: <span id="batter"></span></li>
+      <li><b>Pitching</b>: <span id="pitcher"></span></li>
+    </ul>
+  </aside>
     <script src="bower_components/underscore/underscore.js" charset="utf-8"></script>
     <script src="bower_components/jquery/dist/jquery.js" charset="utf-8"></script>
     <script src="app.js" charset="utf-8"></script>
