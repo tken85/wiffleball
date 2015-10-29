@@ -10,6 +10,28 @@ var baseRunners = [{position: 0}, {position: 0}, {position: 0}];
 var baseRunnerReset = function(){
   baseRunners = [{position: 0}, {position: 0}, {position: 0}];
 };
+
+var updateBaseDisplay = function(){
+  if(baseRunners[0].position > 0){
+    $('#first').html("Runner On");
+  }
+  else{
+    $('#first').html("");
+  }
+  if(baseRunners[1].position > 0){
+    $('#second').html("Runner On");
+  }
+  else{
+    $('#second').html("");
+  }
+  if(baseRunners[2].position > 0){
+    $('#third').html("Runner On");
+  }
+  else{
+    $('#third').html("");
+  }
+};
+
 var moveRunners = function(batter, hitType){
   var third = baseRunners[2];
   var second = baseRunners[1];
@@ -25,6 +47,7 @@ var moveRunners = function(batter, hitType){
     updatePlayerScore();
     baseRunners.pop();
     baseRunners.unshift({position: 1});
+    updateBaseDisplay();
   }
   else if(hitType === "Double"){
     if(third.position > 0){
@@ -42,6 +65,7 @@ var moveRunners = function(batter, hitType){
     baseRunners.pop();
     baseRunners.unshift({position: 2});
     baseRunners.unshift({position: 0});
+    updateBaseDisplay();
   }
   else if(hitType === "Triple"){
     if(third.position > 0){
@@ -65,6 +89,7 @@ var moveRunners = function(batter, hitType){
     baseRunners.unshift({position: 3});
     baseRunners.unshift({position: 0});
     baseRunners.unshift({position: 0});
+    updateBaseDisplay();
   }
   else if (hitType === "Home Run"){
     batter.runs++;
@@ -85,6 +110,7 @@ var moveRunners = function(batter, hitType){
     updatePlayerScore();
     $('#text-area').append(totalRuns +" run(s) Scored." +'<br>' +'<br>');
     baseRunnerReset();
+    updateBaseDisplay();
   }
 };
 function Player(options){
@@ -439,7 +465,8 @@ var playerPitching = function(){
       text: currVal.name,
       click: function () {
               pitchSelected = currVal;
-              thrownLocation();},
+              thrownLocation();
+              $('#description').html("");},
       mouseenter: function(){
               $('#description').html("<b>Speed</b>: " + currVal.speed + " <b>Control</b>: " + currVal.control+ "  <b>Deception</b>: " + currVal.deception);
                 },
@@ -688,6 +715,7 @@ var checkOuts = function(){
     updateOuts();
     updateStrikes();
     updateBalls();
+    updateBaseDisplay();
     if(x <7){
     $('<button/>', {
       text: "Switch Sides",

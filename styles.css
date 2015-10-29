@@ -1,34 +1,32 @@
-body{
+body {
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
-section{
+section {
   width: 600px;
   display: inline-block;
   text-align: center;
-  padding: 10px;
-}
-aside{
+  padding: 10px; }
+
+aside {
   width: 300px;
   display: inline-block;
-  vertical-align: top;
-}
-ul{
+  vertical-align: top; }
+
+ul {
   list-style: none;
-  padding-left: 5px;
-}
+  padding-left: 5px; }
 
-button{
-  margin: 5px 10px;
-}
+button {
+  margin: 5px 10px; }
 
-h2{
+h2 {
   display: inline-block;
-  margin: 5px 0;
-}
+  margin: 5px 0; }
 
-#playerScore, #opponentScore{
+#playerScore, #opponentScore {
   font-size: 20px;
-  color: red;
-}
+  color: red; }
+
+#first, #second, #third {
+  color: red; }
