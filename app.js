@@ -1,3 +1,11 @@
+// note: method of putting elements to the DOM, button navigation of game and using checkX to run through functions in order was previously used when making http://game.mymesstheirkitchen.com/
+
+(function() {
+  'use strict';
+
+
+//variable x is checked frequently to run functions in the correct order
+
 var x=0;
 var pitchInfo = {};
 var outs = 0;
@@ -844,3 +852,4 @@ var checkX = function(z){
   $(document).ready(function(){
     checkX(x);
   });
+}());
