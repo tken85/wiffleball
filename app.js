@@ -211,6 +211,8 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          $('span').removeClass('ballOn');
+          $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Single");
           $('<button/>', {
             text: "Next Pitch",
@@ -225,6 +227,8 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          $('span').removeClass('ballOn');
+          $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Double");
           $('<button/>', {
             text: "Next Pitch",
@@ -239,6 +243,8 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          $('span').removeClass('ballOn');
+          $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Triple");
           $('<button/>', {
             text: "Next Pitch",
@@ -253,6 +259,8 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          $('span').removeClass('ballOn');
+          $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Home Run");
           $('<button/>', {
             text: "Next Pitch",
@@ -691,14 +699,34 @@ var checkStrikes = function(){
     updateOuts();
     updateStrikes();
     checkOuts();
+    $('span').removeClass('ballOn');
+    $('span').removeClass('strikeOn');
   }
   else{
+    if(strikes === 2){
+      addStrikes($('#strikes2'));
+    }
+    if(strikes === 1){
+      addStrikes($('#strikes1'));
+    }
     $('<button/>', {
       text: "Next Pitch",
       click: function () {
         whoPitching();},
               }).appendTo("#text-area");
   }
+};
+
+var addBalls = function(id){
+  id.addClass('ballOn');
+};
+
+var addStrikes = function(id){
+  id.addClass('strikeOn');
+};
+
+var addOuts = function(id){
+  id.addClass('outsOn');
 };
 
 var checkBalls = function(){
@@ -708,6 +736,17 @@ var checkBalls = function(){
     strikes = 0;
     updateBalls();
     updateStrikes();
+    $('span').removeClass('ballOn');
+    $('span').removeClass('strikeOn');
+  }
+  if (balls === 3){
+    addBalls($('#balls3'));
+  }
+  if (balls === 2){
+    addBalls($('#balls2'));
+  }
+  if (balls === 1){
+    addBalls($('#balls1'));
   }
   $('<button/>', {
     text: "Next Pitch",
@@ -727,6 +766,9 @@ var checkOuts = function(){
     updateStrikes();
     updateBalls();
     updateBaseDisplay();
+    $('span').removeClass('ballOn');
+    $('span').removeClass('strikeOn');
+    $('span').removeClass('outsOn');
     if(x <7){
     $('<button/>', {
       text: "Switch Sides",
@@ -739,6 +781,8 @@ var checkOuts = function(){
     balls = 0;
     updateStrikes();
     updateBalls();
+    $('span').removeClass('ballOn');
+    $('span').removeClass('strikeOn');
     $('<button/>', {
       text: "Shake Hands and say 'good game'.",
       click: function () {
@@ -747,6 +791,12 @@ var checkOuts = function(){
   }
 }
   else{
+    if(outs === 2){
+      addOuts($('#outs2'));
+    }
+    if(outs === 1){
+      addOuts($('#outs1'));
+    }
     $('<button/>', {
       text: "Next Pitch",
       click: function () {
