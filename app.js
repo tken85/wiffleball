@@ -327,6 +327,14 @@ var oppChoices ={};
 var player1 = new Player(choices);
 var opponent = new Player(oppChoices);
 
+function PowerUp(options){
+  this.name = options.name;
+  this.type = options.type;
+
+}
+
+var superPitch = new PowerUp({name: "Super Pitch", type: "Pitching"});
+var superBat = new PowerUp({name: "Super Bat", type: "Batting"});
 
 var oppNames = ["Smitty", "Lars", "Terry", "Robin"];
 var oppPitches = [fastball, curveball, changeup, slider];
