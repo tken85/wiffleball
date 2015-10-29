@@ -113,6 +113,9 @@ var moveRunners = function(batter, hitType){
     updateBaseDisplay();
   }
 };
+
+//create player class
+
 function Player(options){
   this.name = options.name;
   this.pitches = [options.pitch1, options.pitch2];
