@@ -162,6 +162,7 @@ function Player(options){
   this.pitch = function(pitchType, location){
     var pitchPower = Math.random();
     var strikeChance = 0;
+    pitchType.mph();
     pitchInfo.location = location;
     pitchInfo.speed = pitchType.speed;
     if(pitchType.control === "Good"){
@@ -306,6 +307,18 @@ function Pitch(options){
   this.speed = options.speed;
   this.control = options.control;
   this.deception = options.deception;
+  this.mph = function(){
+    var speed = 0;
+    if(this.speed === "Fast"){
+      speed = 90+(Math.random()*10);
+    }
+    else{
+      speed = 70+(Math.random()*10);
+    }
+    $('#mph').html(speed.toFixed(0));
+    return speed;
+
+  };
 }
 
 var fastball = new Pitch({name: "Fastball", speed: "Fast", control: "Good", deception: "Poor"});
