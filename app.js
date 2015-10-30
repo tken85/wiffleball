@@ -39,6 +39,12 @@ var updateBaseDisplay = function(){
   }
 };
 
+var baseUpdates = function(){
+  updateBaseDisplay();
+  updateOpponentScore();
+  updatePlayerScore();
+};
+
 var moveRunners = function(batter, hitType){
   var third = baseRunners[2];
   var second = baseRunners[1];
@@ -52,9 +58,7 @@ var moveRunners = function(batter, hitType){
           totalRuns++;
           baseRunners.pop();
           baseRunners.unshift({position:1});
-          updateBaseDisplay();
-          updateOpponentScore();
-          updatePlayerScore();
+          baseUpdates();
         }
         else{
           third.position = 1;
@@ -78,11 +82,10 @@ var moveRunners = function(batter, hitType){
       totalRuns++;
       $('#text-area').append("One Run Scored." +'<br>' +'<br>');
     }
-    updateOpponentScore();
-    updatePlayerScore();
+
     baseRunners.pop();
     baseRunners.unshift({position: 1});
-    updateBaseDisplay();
+    baseUpdates();
   }
   else if(hitType === "Double"){
     if(third.position > 0){
@@ -93,14 +96,13 @@ var moveRunners = function(batter, hitType){
       batter.runs++;
       totalRuns++;
     }
-    updateOpponentScore();
-    updatePlayerScore();
+
     $('#text-area').append(totalRuns +" run(s) Scored." +'<br>' +'<br>');
     baseRunners.pop();
     baseRunners.pop();
     baseRunners.unshift({position: 2});
     baseRunners.unshift({position: 0});
-    updateBaseDisplay();
+    baseUpdates();
   }
   else if(hitType === "Triple"){
     if(third.position > 0){
@@ -115,8 +117,6 @@ var moveRunners = function(batter, hitType){
       batter.runs++;
       totalRuns++;
     }
-    updateOpponentScore();
-    updatePlayerScore();
     $('#text-area').append(totalRuns +" run(s) Scored." +'<br>' +'<br>');
     baseRunners.pop();
     baseRunners.pop();
@@ -124,7 +124,7 @@ var moveRunners = function(batter, hitType){
     baseRunners.unshift({position: 3});
     baseRunners.unshift({position: 0});
     baseRunners.unshift({position: 0});
-    updateBaseDisplay();
+    baseUpdates();
   }
   else if (hitType === "Home Run"){
     batter.runs++;
@@ -141,11 +141,10 @@ var moveRunners = function(batter, hitType){
       batter.runs++;
       totalRuns++;
     }
-    updateOpponentScore();
-    updatePlayerScore();
+
     $('#text-area').append(totalRuns +" run(s) Scored." +'<br>' +'<br>');
     baseRunnerReset();
-    updateBaseDisplay();
+    baseUpdates();
   }
 };
 
@@ -313,6 +312,9 @@ function Pitch(options){
   this.speed = options.speed;
   this.control = options.control;
   this.deception = options.deception;
+  this.horizontalMovement = options.horizontalMovement;
+  this.verticalMovement = options.verticalMovement;
+  this.duration = options.duration;
   this.mph = function(){
     var speed = 0;
     if(this.speed === "Fast"){
@@ -322,16 +324,16 @@ function Pitch(options){
       speed = 70+(Math.random()*10);
     }
     pitchInfo.mph = speed.toFixed(0);
-    $('#mph').html(speed.toFixed(0));
+    $('#mph').html(speed.toFixed(0) + " MPH");
     return speed;
 
   };
 }
 
-var fastball = new Pitch({name: "Fastball", speed: "Fast", control: "Good", deception: "Poor"});
-var curveball = new Pitch({name: "Curveball", speed: "Slow", control: "Poor", deception: "Good"});
-var changeup = new Pitch({name: "Changeup", speed: "Slow", control: "Good", deception: "Poor"});
-var slider = new Pitch({name: "Slider", speed: "Fast", control: "Poor", deception: "Good"});
+var fastball = new Pitch({name: "Fastball", speed: "Fast", control: "Good", deception: "Poor", horizontalMovement: 5, verticalMovement: 5, duration: 1200});
+var curveball = new Pitch({name: "Curveball", speed: "Slow", control: "Poor", deception: "Good", horizontalMovement: 60, verticalMovement: 80, duration: 1500});
+var changeup = new Pitch({name: "Changeup", speed: "Slow", control: "Good", deception: "Poor", horizontalMovement: 10, verticalMovement: 20, duration: 1500});
+var slider = new Pitch({name: "Slider", speed: "Fast", control: "Poor", deception: "Good", horizontalMovement: 120, verticalMovement: 20, duration: 1200});
 
 function Bat(options){
   this.name = options.name;
@@ -356,13 +358,13 @@ function PowerUp(options){
 var superPitch = new PowerUp({name: "Super Pitch", type: "Pitching"});
 var superBat = new PowerUp({name: "Super Bat", type: "Batting"});
 
-var oppNames = ["Smitty", "Lars", "Terry", "Robin"];
+var oppNames = ["Steffan", "Lars", "Terry", "Robin"];
 var oppPitches = [fastball, curveball, changeup, slider];
 var oppBats = [bigRedBat, thinYellowBat];
 
 var setOpponent = function(){
  ///set opponent Name
-  var nameChoice = Math.floor(Math.random()*4);
+  var nameChoice = Math.floor(Math.random()*oppNames.length);
   switch (nameChoice){
 
     case 0:
@@ -383,7 +385,7 @@ var setOpponent = function(){
   }
 
   //choose opponent Pitches
-  var pitchChoice1 = Math.floor(Math.random()*4);
+  var pitchChoice1 = Math.floor(Math.random()*oppPitches.length);
   switch (pitchChoice1){
 
     case 0:
@@ -408,7 +410,7 @@ var setOpponent = function(){
   }
 
   //set pitch type 2. now only has 3 options so no repeats
-  var pitchChoice2 =  Math.floor(Math.random()*3);
+  var pitchChoice2 =  Math.floor(Math.random()*(oppPitches.length-1));
   switch (pitchChoice2){
 
     case 0:
@@ -426,7 +428,7 @@ var setOpponent = function(){
     oppPitches.splice(2,1);
     break;
   }
-  var batChoice = Math.floor(Math.random()*2);
+  var batChoice = Math.floor(Math.random()*oppBats.length);
   switch (batChoice){
 
     case 0:
@@ -530,7 +532,7 @@ var playerPitching = function(){
 
   var thrownPitch = function(){
   $('#text-area').html("You're pitching, " + player1.name + ". Select a pitch" +'<br>'+'<br>');
-
+  resetBall();
   _.each(player1.pitches, function(currVal, idx, arr){
     $('<button/>', {
       text: currVal.name,
@@ -570,6 +572,9 @@ var playerPitching = function(){
 
   var meterRun = function(){
     $('#marker').animate({left: "+180px"}, 1200);
+    setBall('75px', locationSelected);
+    var horMovement = $('#wiffleBall').position().left + pitchSelected.horizontalMovement;
+    var vertMovement = $('#wiffleBall').position().top + pitchSelected.verticalMovement;
     $('#topBox, #bottomBox').on('click', function(){
       $('#marker').stop();
       $('#topBox').unbind('click');
@@ -577,19 +582,43 @@ var playerPitching = function(){
       if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
         console.log("perfect pitch");
         player1.pitch(pitchSelected, locationSelected);
+        moveBall(horMovement, vertMovement, pitchSelected.duration);
         opponentHitting();
       }
       else{
         console.log("bad pitch");
         player1.pitch(pitchSelected, locationSelected);
+        moveBall(horMovement, vertMovement, pitchSelected.duration);
         opponentHitting();
       }
     });
   };
   thrownPitch();
 };
+//Thanks to Joshua at stackOverflow for showing how to chain animations with queue: false. http://stackoverflow.com/questions/1251300/how-to-run-two-jquery-animations-simultaneously
+var setBall = function(horizontal, vertical){
+  $('#wiffleBall').css('left', horizontal);
+  if(vertical === "High"){
+    $('#wiffleBall').css('top', '50px');
+  }
+  else{
+    $('#wiffleBall').css('top', '150px');
+  }
+};
+var moveBall = function(horizontal, vertical, speed){
+  $('#wiffleBall').animate({left: horizontal}, {duration: speed, queue: false});
+  $('#wiffleBall').animate({top: vertical}, {duration: speed, queue: false});
+  $('#wiffleBall').animate({fontSize: "32px"}, {duration: speed, queue: false});
+};
+
+var resetBall = function(){
+  $('#wiffleBall').css('left', '0px');
+  $('#wiffleBall').css('top', '0px');
+  $('#wiffleBall').css('font-size', '0px');
+};
 
 var opponentPitching = function(){
+  resetBall();
   var pitchSelected = "";
   var locationSelected = "";
   var pitchSelector = Math.random();
@@ -607,7 +636,7 @@ var opponentPitching = function(){
   else{
     locationSelected = "High";
   }
-
+  moveBall(pitchSelected.horizontalMovement, pitchSelected.verticalMovement, pitchSelected.duration);
   opponent.pitch(pitchSelected, locationSelected);
   playerHitting();
 };
@@ -620,22 +649,6 @@ var playerHitting = function(){
   var setSwing = function(){
     $('#text-area').html("The pitch is on its way at "+pitchInfo.mph + " MPH. Time and locate your swing by clicking in the box. Waiting 2s will result in no swing." +'<br>'+'<br>');
 
-    /*$('<button/>', {
-      text: "Yes",
-      click: function () {
-        swings=true;
-        setTiming();},
-              }).appendTo("#text-area");
-
-      $('<button/>', {
-          text: "No",
-          click: function () {
-                swings = false;
-                noSwing();
-                },
-                }).appendTo("#text-area");
-
-  };*/
   var noSwing = function(){
     $('#topBox').unbind('click');
     $('#bottomBox').unbind('click');
@@ -653,32 +666,13 @@ var playerHitting = function(){
     }
   };
 
+  //special thanks to Jonathan Fingland on Stackoverflow for the suggestion on timing events http://stackoverflow.com/questions/1038677/how-can-i-measure-the-time-between-click-and-release-in-javascript
+
   function swingFunction(){
   swings = setTimeout(noSwing, 2000);
   }
   swingFunction();
-  //var setTiming = function(){
-  //  $('#text-area').html("The pitch is moving at" +pitchInfo.mph + ". Time and locate your swing by clicking in the box." +'<br>'+'<br>');
-  /*
-    $('<button/>', {
-      text: "Early",
-      click: function () {
-            swingTiming = "Early";
-            setLocation();},
-              }).appendTo("#text-area");
 
-      $('<button/>', {
-          text: "Late",
-          click: function () {
-                swingTiming = "Late";
-                setLocation();},
-              }).appendTo("#text-area");*/
-
-  //};
-
-  //var setLocation = function(){
-
-    //special thanks to Jonathan Fingland on Stackoverflow for the suggestion on timing events http://stackoverflow.com/questions/1038677/how-can-i-measure-the-time-between-click-and-release-in-javascript
     var startTime;
     var endTime;
     function start(){
@@ -691,7 +685,6 @@ var playerHitting = function(){
        return endTime-startTime;
     }
 
-    //$('#text-area').html("Do you swing high or low?" +'<br>'+'<br>');
     start();
     $('#topBox').on('click', function(){
       clearTimeout(swings);
@@ -726,24 +719,8 @@ var playerHitting = function(){
       console.log(swingTiming);
       player1.hit(swingTiming,swingLocation, player1.bat, pitchInfo);
 
-
     });
-    /*
-    $('<button/>', {
-      text: "High",
-      click: function () {
-            swingLocation = "High";
-            player1.hit(swingTiming, swingLocation, player1.bat, pitchInfo);
-            },
-              }).appendTo("#text-area");
 
-      $('<button/>', {
-          text: "Low",
-          click: function () {
-                swingLocation = "Low";
-                player1.hit(swingTiming, swingLocation, player1.bat, pitchInfo);
-                },
-              }).appendTo("#text-area");*/
   };
     setSwing();
 };
@@ -754,7 +731,7 @@ var opponentHitting = function(){
   var swingLocation = "";
   var swingTiming = "";
   //for batter taking the pitch
-  if(swings<0.25){
+  if(swings<0.33){
     if(pitchInfo.noSwing ==="Ball"){
       balls++;
       $('#balls').html(balls);
@@ -786,6 +763,7 @@ var opponentHitting = function(){
     opponent.hit(swingTiming, swingLocation, opponent.bat, pitchInfo);
 }
 };
+
 var updateStrikes = function(){
   $('#strikes').html(strikes);
 };
@@ -899,6 +877,7 @@ var checkOuts = function(){
     $('<button/>', {
       text: "Switch Sides",
       click: function () {
+        resetBall();
         checkX(x);},
               }).appendTo("#text-area");
   }

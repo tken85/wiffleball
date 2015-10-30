@@ -56,10 +56,12 @@ h2 {
   height: 100px; }
 
 #topBox {
-  border-bottom: none; }
+  border-bottom: none;
+  margin-top: 50px; }
 
 #bottomBox {
-  border-top: none; }
+  border-top: none;
+  margin-bottom: 50px; }
 
 #description {
   min-height: 50px; }
@@ -108,3 +110,16 @@ h2 {
   color: yellow;
   position: absolute;
   left: 0px; }
+
+#ballLoc {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border: 1px red solid;
+  margin: 0 auto; }
+
+#wiffleBall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0px; }

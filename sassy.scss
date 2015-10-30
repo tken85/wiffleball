@@ -69,10 +69,12 @@ h2{
 
 #topBox{
   border-bottom: none;
+  margin-top: 50px;
 }
 
 #bottomBox{
   border-top: none;
+  margin-bottom: 50px;
 }
 
 #description{
@@ -125,4 +127,22 @@ h2{
   color: yellow;
   position: absolute;
   left: 0px;
+}
+
+#ballLoc{
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border: 1px red solid;
+  margin: 0 auto;
+  //padding-top: 50px;
+  //padding-bottom: 50px;
+}
+
+#wiffleBall{
+  position: absolute;
+  top:0;
+  left:0;
+  font-size: 0px;
+  //16x24
 }
