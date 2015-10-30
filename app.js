@@ -159,6 +159,8 @@ function Player(options){
   this.bat = options.bat;
   this.status = options.status;
   this.runs = 0;
+  this.hits = 0;
+  this.strikeouts = 0;
   this.pitch = function(pitchType, location){
     var pitchPower = Math.random();
     var strikeChance = 0;
@@ -239,6 +241,7 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Single");
@@ -255,6 +258,7 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Double");
@@ -271,6 +275,7 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Triple");
@@ -287,6 +292,7 @@ function Player(options){
           strikes = 0 ;
           updateBalls();
           updateStrikes();
+          this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Home Run");
@@ -315,6 +321,7 @@ function Pitch(options){
     else{
       speed = 70+(Math.random()*10);
     }
+    pitchInfo.mph = speed.toFixed(0);
     $('#mph').html(speed.toFixed(0));
     return speed;
 
@@ -547,9 +554,58 @@ var playerPitching = function(){
 };
 
   var thrownLocation = function(){
-    $('#text-area').html("Where would you like to throw it?" +'<br>'+'<br>');
+    $('#text-area').html("Select where you would like to throw it. Then stop the meter in the green zone for maximum pitch power." +'<br>'+'<br>');
+    $('#marker').css('left','0px');
+    $('#topBox').on('click', function(){
 
-    $('<button/>', {
+      locationSelected = "High";
+      $('#marker').animate({left: "+180px"}, 1200);
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      $('body').on('dblclick', function(){
+        $('#marker').stop();
+        $('body').unbind('click');
+        if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
+          console.log("perfect pitch");
+          player1.pitch(pitchSelected, locationSelected);
+          opponentHitting();
+        }
+        else{
+          console.log("bad pitch");
+          player1.pitch(pitchSelected, locationSelected);
+          opponentHitting();
+        }
+      });
+
+
+
+    });
+
+    $('#bottomBox').on('click', function(){
+      locationSelected = "Low";
+      $('#marker').animate({left: "+180px"}, 1200);
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      $('body').on('dblclick', function(){
+        $('#marker').stop();
+        $('body').unbind('click');
+        if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
+          console.log("perfect pitch");
+          player1.pitch(pitchSelected, locationSelected);
+          opponentHitting();
+        }
+        else{
+          console.log("bad pitch");
+          player1.pitch(pitchSelected, locationSelected);
+          opponentHitting();
+        }
+      });
+
+
+
+
+    });
+    /*$('<button/>', {
       text: "High",
       click: function () {
         locationSelected = "High";
@@ -563,7 +619,7 @@ var playerPitching = function(){
                 locationSelected = "Low";
                 player1.pitch(pitchSelected, locationSelected);
                 opponentHitting();},
-                }).appendTo("#text-area");
+              }).appendTo("#text-area");*/
   };
   thrownPitch();
 };
@@ -592,14 +648,14 @@ var opponentPitching = function(){
 };
 
 var playerHitting = function(){
-  var swings = "";
+  var swings;
   var swingTiming = "";
   var swingLocation = "";
 
   var setSwing = function(){
-    $('#text-area').html("The pitch is on its way. Do you swing at the pitch?" +'<br>'+'<br>');
+    $('#text-area').html("The pitch is on its way at "+pitchInfo.mph + " MPH. Time and locate your swing by clicking in the box. Waiting 2s will result in no swing." +'<br>'+'<br>');
 
-    $('<button/>', {
+    /*$('<button/>', {
       text: "Yes",
       click: function () {
         swings=true;
@@ -614,8 +670,10 @@ var playerHitting = function(){
                 },
                 }).appendTo("#text-area");
 
-  };
+  };*/
   var noSwing = function(){
+    $('#topBox').unbind('click');
+    $('#bottomBox').unbind('click');
     if(pitchInfo.noSwing ==="Ball"){
       balls++;
       $('#balls').html(balls);
@@ -629,9 +687,14 @@ var playerHitting = function(){
       checkStrikes();
     }
   };
-  var setTiming = function(){
-    $('#text-area').html("The pitch is moving " +pitchInfo.speed + ". How do you time your swing?" +'<br>'+'<br>');
 
+  function swingFunction(){
+  swings = setTimeout(noSwing, 2000);
+  }
+  swingFunction();
+  //var setTiming = function(){
+  //  $('#text-area').html("The pitch is moving at" +pitchInfo.mph + ". Time and locate your swing by clicking in the box." +'<br>'+'<br>');
+  /*
     $('<button/>', {
       text: "Early",
       click: function () {
@@ -644,13 +707,63 @@ var playerHitting = function(){
           click: function () {
                 swingTiming = "Late";
                 setLocation();},
-                }).appendTo("#text-area");
+              }).appendTo("#text-area");*/
 
-  };
+  //};
 
-  var setLocation = function(){
-    $('#text-area').html("Do you swing high or low?" +'<br>'+'<br>');
+  //var setLocation = function(){
 
+    //special thanks to Jonathan Fingland on Stackoverflow for the suggestion on timing events http://stackoverflow.com/questions/1038677/how-can-i-measure-the-time-between-click-and-release-in-javascript
+    var startTime;
+    var endTime;
+    function start(){
+      startTime = new Date();
+    }
+    function end(){
+      endTime = new Date();
+    }
+    function totalTime(){
+       return endTime-startTime;
+    }
+
+    //$('#text-area').html("Do you swing high or low?" +'<br>'+'<br>');
+    start();
+    $('#topBox').on('click', function(){
+      clearTimeout(swings);
+      swingLocation = "High";
+      end();
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      if(totalTime()<1000){
+        swingTiming = "Early";
+      }
+      else{
+        swingTiming = "Late";
+      }
+      console.log(endTime-startTime);
+      console.log(swingTiming);
+      player1.hit(swingTiming,swingLocation, player1.bat, pitchInfo);
+
+    });
+    $('#bottomBox').on('click', function(){
+      clearTimeout(swings);
+      swingLocation = "Low";
+      end();
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      if(totalTime()<1000){
+        swingTiming = "Early";
+      }
+      else{
+        swingTiming = "Late";
+      }
+      console.log(endTime-startTime);
+      console.log(swingTiming);
+      player1.hit(swingTiming,swingLocation, player1.bat, pitchInfo);
+
+
+    });
+    /*
     $('<button/>', {
       text: "High",
       click: function () {
@@ -665,7 +778,7 @@ var playerHitting = function(){
                 swingLocation = "Low";
                 player1.hit(swingTiming, swingLocation, player1.bat, pitchInfo);
                 },
-                }).appendTo("#text-area");
+              }).appendTo("#text-area");*/
   };
     setSwing();
 };

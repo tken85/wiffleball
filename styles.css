@@ -35,7 +35,7 @@ h2 {
   color: red; }
 
 .balls, .strikes, .outs {
-  padding: 0 5px;
+  padding: 0 9px;
   margin: 0 1px;
   border: 1px solid gray;
   border-radius: 100%; }
@@ -48,3 +48,63 @@ h2 {
 
 .outsOn {
   background-color: red; }
+
+#topBox, #bottomBox {
+  width: 200px;
+  border: 1px dashed black;
+  margin: 1px auto;
+  height: 100px; }
+
+#topBox {
+  border-bottom: none; }
+
+#bottomBox {
+  border-top: none; }
+
+#description {
+  min-height: 50px; }
+
+#pitchMeter {
+  height: 20px;
+  width: 180px;
+  margin: 0 auto;
+  border: 2px solid black;
+  background-color: blue;
+  position: relative; }
+
+.meter {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+  background-color: red;
+  border: 1px solid black; }
+
+.inline {
+  box-sizing: border-box;
+  display: inline;
+  float: right;
+  height: 20px;
+  width: 60px; }
+
+.good {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 20px;
+  background-color: green;
+  width: 30px;
+  border: 1px solid black; }
+
+.bad {
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: red;
+  width: 30px;
+  height: 20px;
+  border: 1px solid black; }
+
+#marker {
+  font-weight: bold;
+  color: yellow;
+  position: absolute;
+  left: 0px; }
