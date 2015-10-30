@@ -440,9 +440,6 @@ var setOpponent = function(){
     opponent = new Player(oppChoices);
 };
 
-
-
-
 var playerBat = function(){
   var batOptions= [thinYellowBat, bigRedBat];
   $("#text-area").html("Choose Your Bat " +'<br/>'+'<br/>');
@@ -556,70 +553,38 @@ var playerPitching = function(){
   var thrownLocation = function(){
     $('#text-area').html("Select where you would like to throw it. Then stop the meter in the green zone for maximum pitch power." +'<br>'+'<br>');
     $('#marker').css('left','0px');
+
     $('#topBox').on('click', function(){
-
-      locationSelected = "High";
-      $('#marker').animate({left: "+180px"}, 1200);
-      $('#topBox').unbind('click');
-      $('#bottomBox').unbind('click');
-      $('body').on('dblclick', function(){
-        $('#marker').stop();
-        $('body').unbind('click');
-        if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
-          console.log("perfect pitch");
-          player1.pitch(pitchSelected, locationSelected);
-          opponentHitting();
-        }
-        else{
-          console.log("bad pitch");
-          player1.pitch(pitchSelected, locationSelected);
-          opponentHitting();
-        }
-      });
-
-
-
-    });
-
-    $('#bottomBox').on('click', function(){
-      locationSelected = "Low";
-      $('#marker').animate({left: "+180px"}, 1200);
-      $('#topBox').unbind('click');
-      $('#bottomBox').unbind('click');
-      $('body').on('dblclick', function(){
-        $('#marker').stop();
-        $('body').unbind('click');
-        if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
-          console.log("perfect pitch");
-          player1.pitch(pitchSelected, locationSelected);
-          opponentHitting();
-        }
-        else{
-          console.log("bad pitch");
-          player1.pitch(pitchSelected, locationSelected);
-          opponentHitting();
-        }
-      });
-
-
-
-
-    });
-    /*$('<button/>', {
-      text: "High",
-      click: function () {
         locationSelected = "High";
-        player1.pitch(pitchSelected, locationSelected);
-        opponentHitting();},
-              }).appendTo("#text-area");
+        $('#topBox').unbind('click');
+        $('#bottomBox').unbind('click');
+        meterRun();
+      });
+    $('#bottomBox').on('click',function(){
+      locationSelected = "Low";
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      meterRun();
+    });
+  };
 
-      $('<button/>', {
-          text: "Low",
-          click: function () {
-                locationSelected = "Low";
-                player1.pitch(pitchSelected, locationSelected);
-                opponentHitting();},
-              }).appendTo("#text-area");*/
+  var meterRun = function(){
+    $('#marker').animate({left: "+180px"}, 1200);
+    $('#topBox, #bottomBox').on('click', function(){
+      $('#marker').stop();
+      $('#topBox').unbind('click');
+      $('#bottomBox').unbind('click');
+      if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
+        console.log("perfect pitch");
+        player1.pitch(pitchSelected, locationSelected);
+        opponentHitting();
+      }
+      else{
+        console.log("bad pitch");
+        player1.pitch(pitchSelected, locationSelected);
+        opponentHitting();
+      }
+    });
   };
   thrownPitch();
 };
