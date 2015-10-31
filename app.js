@@ -19,22 +19,24 @@ var baseRunnerReset = function(){
 
 var updateBaseDisplay = function(){
   if(baseRunners[0].position > 0){
-    $('#first').html("Runner On");
+    $('#first').addClass('runnerOn');
+    //$('#first').html("Runner On");
   }
   else{
-    $('#first').html("");
+    //$('#first').html("");
+    $('#first').removeClass('runnerOn');
   }
   if(baseRunners[1].position > 0){
-    $('#second').html("Runner On");
+    $('#second').addClass('runnerOn');
   }
   else{
-    $('#second').html("");
+    $('#second').removeClass('runnerOn');
   }
   if(baseRunners[2].position > 0){
-    $('#third').html("Runner On");
+    $('#third').addClass('runnerOn');
   }
   else{
-    $('#third').html("");
+    $('#third').removeClass('runnerOn');
   }
 };
 
@@ -327,7 +329,7 @@ function Pitch(options){
       speed = 70+(Math.random()*10);
     }
     pitchInfo.mph = speed.toFixed(0);
-    $('#mph').html(speed.toFixed(0) + " MPH");
+    $('#speedometer').html(speed.toFixed(0) + " MPH");
     return speed;
 
   };

@@ -121,4 +121,67 @@ div {
   font-size: 0px;
   z-index: -1; }
 
-/*test*/
+#diamond {
+  vertical-align: top;
+  width: 110px;
+  margin: auto;
+  margin-top: 50px;
+  /*position: relative;*/
+  overflow: hidden;
+  transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -o-transform: rotate(45deg); }
+
+.title-diamond {
+  text-align: center;
+  color: #fff;
+  font-variant: small-caps;
+  font-size: 19px;
+  margin-top: 70px;
+  transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg); }
+
+.base {
+  width: 50px;
+  height: 50px;
+  border: #00665b 1px solid;
+  background-color: white;
+  margin-bottom: 3px;
+  margin-right: 3px;
+  float: left;
+  position: relative;
+  cursor: pointer; }
+
+section {
+  display: inline-block;
+  width: 75%; }
+
+aside {
+  display: inline-block;
+  width: 20%;
+  vertical-align: top; }
+
+#speedometer {
+  background-color: black;
+  color: yellow;
+  height: 110px;
+  width: 110px;
+  margin: 20px auto;
+  font-size: 36px;
+  font-family: 'Codystar'; }
+
+#home {
+  background-color: white; }
+
+.runnerOn {
+  background-color: red; }
+
+/*.infield{
+  background-color: #009688;
+}*/
+/*#009688*/
