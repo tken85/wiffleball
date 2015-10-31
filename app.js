@@ -2,7 +2,6 @@
 
 // can you refactor object look ups from if statements
 
-
 //variable x is checked frequently to run functions in the correct order
 
 var x=0;
@@ -245,6 +244,7 @@ function Player(options){
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Single");
           $('<button/>', {
+            class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
               whoPitching();},
@@ -262,6 +262,7 @@ function Player(options){
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Double");
           $('<button/>', {
+            class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
               whoPitching();},
@@ -279,6 +280,7 @@ function Player(options){
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Triple");
           $('<button/>', {
+            class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
               whoPitching();},
@@ -296,6 +298,7 @@ function Player(options){
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Home Run");
           $('<button/>', {
+            class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
               whoPitching();},
@@ -447,6 +450,7 @@ var playerBat = function(){
   $("#text-area").html("Choose Your Bat " +'<br/>'+'<br/>');
   _.each(batOptions, function(currVal, idx, arr){
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: currVal.name,
       click: function () {
               player1.bat = currVal;
@@ -479,6 +483,7 @@ var playerPitches = function(){
 
   _.each(pitchOptions, function(currVal, idx, arr){
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: currVal.name,
       click: function () {
               player1.pitches[0] = currVal;
@@ -499,6 +504,7 @@ var playerPitches = function(){
     $("#text-area").html("Choose your second and last Pitch " +'<br/>'+'<br/>');
     _.each(pitchOptions, function(currVal, idx, arr){
       $('<button/>', {
+        class: "btn btn-default btn-sm",
         text: currVal.name,
         click: function () {
                 player1.pitches[1] = currVal;
@@ -519,6 +525,7 @@ var describeOpponent = function(){
   $('#text-area').html("Hello, " + player1.name + "! You will be facing " + opponent.name + ", who wields a " + opponent.bat.name + " and throws a "+ opponent.pitches[0].name + " and a " + opponent.pitches[1].name + ". Prepare for Glory!" +'<br>'+'<br>');
   $('#description').html('');
   $('<button/>', {
+    class: "btn btn-default btn-sm",
     text: "Proceed",
     click: function () {
       checkX(x);},
@@ -535,6 +542,7 @@ var playerPitching = function(){
   resetBall();
   _.each(player1.pitches, function(currVal, idx, arr){
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: currVal.name,
       click: function () {
               pitchSelected = currVal;
@@ -572,7 +580,7 @@ var playerPitching = function(){
 
   var meterRun = function(){
     $('#marker').animate({left: "+180px"}, 1200);
-    setBall('75px', locationSelected);
+    setBall(75, locationSelected);
     var horMovement = $('#wiffleBall').position().left + pitchSelected.horizontalMovement;
     var vertMovement = $('#wiffleBall').position().top + pitchSelected.verticalMovement;
     $('#topBox, #bottomBox').on('click', function(){
@@ -597,12 +605,16 @@ var playerPitching = function(){
 };
 //Thanks to Joshua at stackOverflow for showing how to chain animations with queue: false. http://stackoverflow.com/questions/1251300/how-to-run-two-jquery-animations-simultaneously
 var setBall = function(horizontal, vertical){
-  $('#wiffleBall').css('left', horizontal);
+  var horRand = horizontal + Math.floor(Math.random()*70);
+  var vertRand;
+  $('#wiffleBall').css('left', horRand);
   if(vertical === "High"){
-    $('#wiffleBall').css('top', '50px');
+    vertRand = 50 + Math.floor(Math.random()*50);
+    $('#wiffleBall').css('top', vertRand);
   }
   else{
-    $('#wiffleBall').css('top', '150px');
+    vertRand = 150 + Math.floor(Math.random()*50);
+    $('#wiffleBall').css('top', vertRand);
   }
 };
 var moveBall = function(horizontal, vertical, speed){
@@ -636,7 +648,10 @@ var opponentPitching = function(){
   else{
     locationSelected = "High";
   }
-  moveBall(pitchSelected.horizontalMovement, pitchSelected.verticalMovement, pitchSelected.duration);
+  setBall(75, locationSelected);
+  var horMovement = $('#wiffleBall').position().left + pitchSelected.horizontalMovement;
+  var vertMovement = $('#wiffleBall').position().top + pitchSelected.verticalMovement;
+  moveBall(horMovement, vertMovement, pitchSelected.duration);
   opponent.pitch(pitchSelected, locationSelected);
   playerHitting();
 };
@@ -814,6 +829,7 @@ var checkStrikes = function(){
       addStrikes($('#strikes1'));
     }
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: "Next Pitch",
       click: function () {
         whoPitching();},
@@ -853,6 +869,7 @@ var checkBalls = function(){
     addBalls($('#balls1'));
   }
   $('<button/>', {
+    class: "btn btn-default btn-sm",
     text: "Next Pitch",
     click: function () {
       whoPitching();},
@@ -875,6 +892,7 @@ var checkOuts = function(){
     $('span').removeClass('outsOn');
     if(x <7){
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: "Switch Sides",
       click: function () {
         resetBall();
@@ -889,6 +907,7 @@ var checkOuts = function(){
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: "Shake Hands and say 'good game'.",
       click: function () {
         checkX(x);},
@@ -903,6 +922,7 @@ var checkOuts = function(){
       addOuts($('#outs1'));
     }
     $('<button/>', {
+      class: "btn btn-default btn-sm",
       text: "Next Pitch",
       click: function () {
         whoPitching();},

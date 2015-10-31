@@ -1,31 +1,25 @@
-body {
-  margin: 0;
-  padding: 0; }
-
-section {
-  width: 600px;
-  display: inline-block;
-  text-align: center;
-  padding: 10px; }
-
-aside {
-  width: 300px;
-  display: inline-block;
-  vertical-align: top; }
-
-ul {
-  list-style: none;
-  padding-left: 5px; }
-
-li {
-  margin: 5px 0; }
-
 button {
   margin: 5px 10px; }
 
-h2 {
-  display: inline-block;
-  margin: 5px 0; }
+div {
+  text-align: center; }
+
+.row {
+  border: 1px solid white;
+  background-color: green;
+  color: white; }
+
+.rightBorder {
+  border-right: 1px solid white; }
+
+.leftBorder {
+  border-left: 1px solid white; }
+
+.noBottom {
+  border-bottom: none; }
+
+.noTop {
+  border-top: none; }
 
 #playerScore, #opponentScore {
   font-size: 20px;
@@ -41,7 +35,7 @@ h2 {
   border-radius: 100%; }
 
 .ballOn {
-  background-color: green; }
+  background-color: yellow; }
 
 .strikeOn {
   background-color: blue; }
@@ -53,7 +47,8 @@ h2 {
   width: 200px;
   border: 1px dashed black;
   margin: 1px auto;
-  height: 100px; }
+  height: 100px;
+  z-index: 1; }
 
 #topBox {
   border-bottom: none;
@@ -69,8 +64,8 @@ h2 {
 #pitchMeter {
   height: 20px;
   width: 180px;
-  margin: 0 auto;
-  border: 2px solid black;
+  margin: 10px auto;
+  border: 1px solid black;
   background-color: blue;
   position: relative; }
 
@@ -92,24 +87,25 @@ h2 {
 .good {
   display: inline-block;
   box-sizing: border-box;
-  height: 20px;
+  height: 19px;
   background-color: green;
   width: 30px;
-  border: 1px solid black; }
+  border-left: 1px solid black; }
 
 .bad {
   display: inline-block;
   box-sizing: border-box;
   background-color: red;
   width: 30px;
-  height: 20px;
-  border: 1px solid black; }
+  height: 19px;
+  border-left: 1px solid black; }
 
 #marker {
   font-weight: bold;
   color: yellow;
   position: absolute;
-  left: 0px; }
+  left: 0px;
+  top: 0px; }
 
 #ballLoc {
   width: 300px;
@@ -122,4 +118,7 @@ h2 {
   position: absolute;
   top: 0;
   left: 0;
-  font-size: 0px; }
+  font-size: 0px;
+  z-index: -1; }
+
+/*test*/

@@ -1,148 +1,131 @@
-body{
-  margin: 0;
-  padding: 0;
-}
-
-section{
-  width: 600px;
-  display: inline-block;
+button {
+  margin: 5px 10px; }
+div{
   text-align: center;
-  padding: 10px;
-}
-aside{
-  width: 300px;
-  display: inline-block;
-  vertical-align: top;
-}
-ul{
-  list-style: none;
-  padding-left: 5px;
-}
-li{
-  margin: 5px 0;
 }
 
-button{
-  margin: 5px 10px;
-}
-
-h2{
-  display: inline-block;
-  margin: 5px 0;
-}
-
-#playerScore, #opponentScore{
-  font-size: 20px;
-  color: red;
-}
-
-#first, #second, #third{
-  color: red;
-}
-
-.balls, .strikes, .outs{
-  padding: 0 9px;
-  margin: 0 1px;
-  border: 1px solid gray;
-  border-radius: 100%;
-
-}
-
-.ballOn{
+.row {
+  border: 1px solid white;
   background-color: green;
-}
-
-.strikeOn{
-  background-color: blue;
-}
-.outsOn{
-  background-color: red;
-}
-
-#topBox, #bottomBox{
-  width: 200px;
-  border: 1px dashed black;
-  margin: 1px auto;
-  height: 100px;
+  color: white;
 
 }
 
-#topBox{
+
+.rightBorder{
+  border-right: 1px solid white;
+}
+.leftBorder{
+  border-left: 1px solid white;
+}
+
+.noBottom{
   border-bottom: none;
-  margin-top: 50px;
 }
 
-#bottomBox{
+.noTop {
   border-top: none;
-  margin-bottom: 50px;
 }
 
-#description{
-  min-height: 50px;
-}
+#playerScore, #opponentScore {
+font-size: 20px;
+color: red; }
 
-#pitchMeter{
-  height: 20px;
-  width: 180px;
-  margin: 0 auto;
-  border: 2px solid black;
-  background-color: blue;
-  position: relative;
+#first, #second, #third {
+color: red; }
 
-}
+.balls, .strikes, .outs {
+padding: 0 9px;
+margin: 0 1px;
+border: 1px solid gray;
+border-radius: 100%; }
 
-.meter{
-  box-sizing: border-box;
-  display: inline-block;
-  width: 30px;
-  height: 20px;
-  background-color: red;
-  border: 1px solid black;
-}
-.inline{
-  box-sizing: border-box;
-  display: inline;
-  float: right;
-  height: 20px;
-  width: 60px;
-}
-.good{
-  display: inline-block;
-  box-sizing: border-box;
-  height: 20px;
-  background-color: green;
-  width: 30px;
-  border: 1px solid black;
-}
-.bad{
-  display: inline-block;
-  box-sizing: border-box;
-  background-color: red;
-  width: 30px;
-  height: 20px;
-  border: 1px solid black;
-}
-#marker{
-  font-weight: bold;
-  color: yellow;
-  position: absolute;
-  left: 0px;
-}
+.ballOn {
+background-color: yellow; }
 
-#ballLoc{
-  width: 300px;
-  height: 300px;
-  position: relative;
-  border: 1px red solid;
-  margin: 0 auto;
-  //padding-top: 50px;
-  //padding-bottom: 50px;
-}
+.strikeOn {
+background-color: blue; }
 
-#wiffleBall{
-  position: absolute;
-  top:0;
-  left:0;
-  font-size: 0px;
-  //16x24
-}
+.outsOn {
+background-color: red; }
+
+#topBox, #bottomBox {
+width: 200px;
+border: 1px dashed black;
+margin: 1px auto;
+height: 100px;
+z-index: 1; }
+
+#topBox {
+border-bottom: none;
+margin-top: 50px; }
+
+#bottomBox {
+border-top: none;
+margin-bottom: 50px; }
+
+#description {
+min-height: 50px; }
+
+#pitchMeter {
+height: 20px;
+width: 180px;
+margin: 10px auto;
+border: 1px solid black;
+background-color: blue;
+position: relative; }
+
+.meter {
+box-sizing: border-box;
+display: inline-block;
+width: 30px;
+height: 20px;
+background-color: red;
+border: 1px solid black; }
+
+.inline {
+box-sizing: border-box;
+display: inline;
+float: right;
+height: 20px;
+width: 60px; }
+
+.good {
+display: inline-block;
+box-sizing: border-box;
+height: 19px;
+background-color: green;
+width: 30px;
+border-left: 1px solid black; }
+
+.bad {
+display: inline-block;
+box-sizing: border-box;
+background-color: red;
+width: 30px;
+height: 19px;
+border-left: 1px solid black; }
+
+#marker {
+font-weight: bold;
+color: yellow;
+position: absolute;
+left: 0px;
+top:0px; }
+
+#ballLoc {
+width: 300px;
+height: 300px;
+position: relative;
+border: 1px red solid;
+margin: 0 auto; }
+
+#wiffleBall {
+position: absolute;
+top: 0;
+left: 0;
+font-size: 0px;
+z-index: -1; }
+
+
+/*test*/
