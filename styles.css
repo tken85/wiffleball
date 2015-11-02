@@ -1,6 +1,3 @@
-/*header, button, #text-area{
-  font-family: 'Press Start 2P';
-}*/
 button {
   margin: 5px 5px; }
 
@@ -68,7 +65,7 @@ div {
   height: 20px;
   width: 180px;
   margin: 10px auto;
-  border: 1px dashed black;
+  border: 1px solid black;
   background-color: blue;
   position: relative; }
 
@@ -192,6 +189,13 @@ aside {
 
 input {
   width: 200px; }
+
+#jumbotron {
+  background-color: black;
+  font-family: 'Press Start 2P';
+  color: yellow;
+  height: 40px;
+  padding: 10px; }
 
 /*.infield{
   background-color: #009688;

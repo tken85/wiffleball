@@ -11,7 +11,9 @@ var balls = 0;
 var strikes = 0;
 var baseRunners = [{position: 0}, {position: 0}, {position: 0}];
 
-
+var resetJumbo = function(){
+  $('#jumbotron').html("MMTK GAMES");
+};
 // move position of runners and see if runs are scored
 var baseRunnerReset = function(){
   baseRunners = [{position: 0}, {position: 0}, {position: 0}];
@@ -286,7 +288,9 @@ function Player(options){
           balls = 0;
           strikes = 0;
           outs++;
+          hitBall(-20);
           checkOuts();
+          $('#jumbotron').html("GROUND-OUT!");
 
         }
         else if(distance >=0.25 && distance <0.7){
@@ -294,6 +298,8 @@ function Player(options){
           balls = 0;
           strikes = 0 ;
           this.hits++;
+          hitBall(50);
+          $('#jumbotron').html("SINGLE!");
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Single");
@@ -312,6 +318,8 @@ function Player(options){
           balls = 0;
           strikes = 0;
           this.hits++;
+          hitBall(100);
+          $('#jumbotron').html("DOUBLE!");
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Double");
@@ -330,6 +338,8 @@ function Player(options){
           balls = 0;
           strikes = 0 ;
           this.hits++;
+          hitBall(200);
+          $('#jumbotron').html("TRIPLE!");
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Triple");
@@ -348,6 +358,8 @@ function Player(options){
           balls = 0;
           strikes = 0 ;
           this.hits++;
+          hitBall(300);
+          $('#jumbotron').html("HOME RUN!");
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
           moveRunners(whoHitting(), "Home Run");
@@ -688,6 +700,11 @@ var resetBall = function(){
   $('#wiffleBall').css('font-size', '0px');
 };
 
+var hitBall = function(howFar){
+  var verticalPos = $('#wiffleBall').position().top - howFar;
+  $('#wiffleBall').animate({top: verticalPos}, {duration: 500, queue: false});
+  $('#wiffleBall').animate({fontSize: "0px"}, {duration: 500, queue: false});
+};
 var opponentPitching = function(){
   resetBall();
   var pitchSelected = "";
@@ -862,14 +879,17 @@ var checkStrikes = function(){
     strikes = 0;
     balls = 0;
     checkOuts();
+    $('#jumbotron').html("STRIKEOUT!");
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
   }
   else{
     if(strikes === 2){
+      resetJumbo();
       addStrikes($('#strikes2'));
     }
     else if(strikes === 1){
+      resetJumbo();
       addStrikes($('#strikes1'));
     }
     $('<button/>', {
@@ -900,16 +920,20 @@ var checkBalls = function(){
     $("<h1> Batter Walks.</h1>").appendTo("#text-area");
     balls = 0;
     strikes = 0;
+    $('#jumbotron').html("WALK!");
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
   }
   else if (balls === 3){
+    resetJumbo();
     addBalls($('#balls3'));
   }
   else if (balls === 2){
+    resetJumbo();
     addBalls($('#balls2'));
   }
   else if (balls === 1){
+    resetJumbo();
     addBalls($('#balls1'));
   }
   $('<button/>', {
@@ -1061,6 +1085,7 @@ var checkX = function(z){
       x++;
       break;
     case 6:
+      resetJumbo();
       opponent.status = "Pitching";
       player1.status = "Hitting";
       updateBatter(player1);
