@@ -20,10 +20,8 @@ var baseRunnerReset = function(){
 var updateBaseDisplay = function(){
   if(baseRunners[0].position > 0){
     $('#first').addClass('runnerOn');
-    //$('#first').html("Runner On");
   }
   else{
-    //$('#first').html("");
     $('#first').removeClass('runnerOn');
   }
   if(baseRunners[1].position > 0){
@@ -77,7 +75,7 @@ var moveRunners = function(batter, hitType){
       updateBaseDisplay();
     }
   }
-  if(hitType === "Single"){
+  else if(hitType === "Single"){
     if(third.position > 0 ){
       batter.runs++;
       totalRuns++;
@@ -154,13 +152,67 @@ var moveRunners = function(batter, hitType){
 function Player(options){
   this.name = options.name;
   this.pitches = [options.pitch1, options.pitch2];
-  //this.pitch1 = options.pitch1;
-  //this.pitch2 = options.pitch2;
   this.bat = options.bat;
   this.status = options.status;
   this.runs = 0;
   this.hits = 0;
   this.strikeouts = 0;
+  this.goodPitch = function(pitchType, location){
+    var pitchPower = Math.random()*1.8;
+    var strikeChance = 0;
+    pitchType.mph();
+    pitchInfo.location = location;
+    pitchInfo.speed = pitchType.speed;
+    if(pitchType.control === "Good"){
+      strikeChance = Math.random()*1.8;
+    }
+    else{
+      strikeChance = Math.random()*1.2;
+    }
+    if(strikeChance <= 0.5){
+      pitchInfo.noSwing = "Ball";
+      setBall(0,location);
+    }
+    else{
+      pitchInfo.noSwing = "Strike";
+      setBall(75,location);
+    }
+    if(pitchType.deception ==="Good"){
+      pitchPower*=1.5;
+    }
+    pitchInfo.power = pitchPower;
+    var horMovement = $('#wiffleBall').position().left + pitchType.horizontalMovement;
+    var vertMovement = $('#wiffleBall').position().top + pitchType.verticalMovement;
+    moveBall(horMovement, vertMovement, pitchType.duration);
+  };
+  this.badPitch = function(pitchType, location){
+    var pitchPower = Math.random()*0.8;
+    var strikeChance = 0;
+    pitchType.mph();
+    pitchInfo.location = location;
+    pitchInfo.speed = pitchType.speed;
+    if(pitchType.control === "Good"){
+    strikeChance = Math.random()*1.5;
+    }
+    else{
+      strikeChance = Math.random();
+    }
+    if(strikeChance <= 0.5){
+      pitchInfo.noSwing ="Ball";
+      setBall(0, location);
+    }
+    else{
+      pitchInfo.noSwing = "Strike";
+      setBall(75,location);
+    }
+    if (pitchType.deception ==="Good"){
+      pitchPower *= 1.5;
+    }
+    pitchInfo.power = pitchPower;
+    var horMovement = $('#wiffleBall').position().left + pitchType.horizontalMovement;
+    var vertMovement = $('#wiffleBall').position().top + pitchType.verticalMovement;
+    moveBall(horMovement, vertMovement, pitchType.duration);
+  };
   this.pitch = function(pitchType, location){
     var pitchPower = Math.random();
     var strikeChance = 0;
@@ -184,6 +236,8 @@ function Player(options){
       pitchPower *= 1.5;
     }
     pitchInfo.power = pitchPower;
+
+
   };
   this.hit = function(timing, location, bat, pitchInfo){
       var contactChance = Math.random();
@@ -218,7 +272,6 @@ function Player(options){
       else{
         $('#text-area').html("STTTTTRRRRIIIKKKEE"+'<br>'+'<br>');
         strikes++;
-        updateStrikes();
         checkStrikes();
 
       }
@@ -230,8 +283,9 @@ function Player(options){
         }
         if(distance < 0.25){
           $('#text-area').append("Grounded out weakly to the pitcher" +'<br>' +'<br>');
+          balls = 0;
+          strikes = 0;
           outs++;
-          updateOuts();
           checkOuts();
 
         }
@@ -239,8 +293,6 @@ function Player(options){
           $('#text-area').append("Slapped a Single" +'<br>' +'<br>');
           balls = 0;
           strikes = 0 ;
-          updateBalls();
-          updateStrikes();
           this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
@@ -249,16 +301,16 @@ function Player(options){
             class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
+              resetBall();
+              $('#nextOn').html("");
               whoPitching();},
-                    }).appendTo("#text-area");
+            }).appendTo("#nextOn");
 
         }
         else if (distance >= 0.7 && distance < 0.9){
           $('#text-area').append("Smacked a double" +'<br>' +'<br>');
           balls = 0;
-          strikes = 0 ;
-          updateBalls();
-          updateStrikes();
+          strikes = 0;
           this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
@@ -267,16 +319,16 @@ function Player(options){
             class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
+              resetBall();
+              $('#nextOn').html("");
               whoPitching();},
-                    }).appendTo("#text-area");
+            }).appendTo("#nextOn");
 
         }
         else if (distance >=0.9 && distance < 1){
           $('#text-area').append("Hit the gap and got a triple" +'<br>' +'<br>');
           balls = 0;
           strikes = 0 ;
-          updateBalls();
-          updateStrikes();
           this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
@@ -285,16 +337,16 @@ function Player(options){
             class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
+              resetBall();
+              $('#nextOn').html("");
               whoPitching();},
-                    }).appendTo("#text-area");
+            }).appendTo("#nextOn");
 
         }
         else{
           $('#text-area').append("Crushed a homer." +'<br>' +'<br>');
           balls = 0;
           strikes = 0 ;
-          updateBalls();
-          updateStrikes();
           this.hits++;
           $('span').removeClass('ballOn');
           $('span').removeClass('strikeOn');
@@ -303,8 +355,10 @@ function Player(options){
             class: "btn btn-default btn-sm",
             text: "Next Pitch",
             click: function () {
+              resetBall();
+              $('#nextOn').html("");
               whoPitching();},
-                    }).appendTo("#text-area");
+            }).appendTo("#nextOn");
 
         }
       }
@@ -336,9 +390,9 @@ function Pitch(options){
 }
 
 var fastball = new Pitch({name: "Fastball", speed: "Fast", control: "Good", deception: "Poor", horizontalMovement: 5, verticalMovement: 5, duration: 1200});
-var curveball = new Pitch({name: "Curveball", speed: "Slow", control: "Poor", deception: "Good", horizontalMovement: 60, verticalMovement: 80, duration: 1500});
+var curveball = new Pitch({name: "Curveball", speed: "Slow", control: "Poor", deception: "Good", horizontalMovement: 40, verticalMovement: 80, duration: 1500});
 var changeup = new Pitch({name: "Changeup", speed: "Slow", control: "Good", deception: "Poor", horizontalMovement: 10, verticalMovement: 20, duration: 1500});
-var slider = new Pitch({name: "Slider", speed: "Fast", control: "Poor", deception: "Good", horizontalMovement: 120, verticalMovement: 20, duration: 1200});
+var slider = new Pitch({name: "Slider", speed: "Fast", control: "Poor", deception: "Good", horizontalMovement: 100, verticalMovement: 20, duration: 1200});
 
 function Bat(options){
   this.name = options.name;
@@ -549,14 +603,15 @@ var playerPitching = function(){
       click: function () {
               pitchSelected = currVal;
               thrownLocation();
-              $('#description').html("");},
+              $('#description').html("");
+              $('#nextOn').html("");},
       mouseenter: function(){
               $('#description').html("<b>Speed</b>: " + currVal.speed + " <b>Control</b>: " + currVal.control+ "  <b>Deception</b>: " + currVal.deception);
                 },
       mouseleave: function(){
               $('#description').html("");
               }
-              }).appendTo("#text-area");
+            }).appendTo("#nextOn");
   });
 
 
@@ -582,30 +637,24 @@ var playerPitching = function(){
 
   var meterRun = function(){
     $('#marker').animate({left: "+180px"}, 1200);
-    setBall(75, locationSelected);
-    var horMovement = $('#wiffleBall').position().left + pitchSelected.horizontalMovement;
-    var vertMovement = $('#wiffleBall').position().top + pitchSelected.verticalMovement;
     $('#topBox, #bottomBox').on('click', function(){
       $('#marker').stop();
       $('#topBox').unbind('click');
       $('#bottomBox').unbind('click');
       if($('#marker').position().left >=120 && $('#marker').position().left <= 150){
         console.log("perfect pitch");
-        player1.pitch(pitchSelected, locationSelected);
-        moveBall(horMovement, vertMovement, pitchSelected.duration);
-        opponentHitting();
+        player1.goodPitch(pitchSelected, locationSelected);
+
       }
       else{
         console.log("bad pitch");
-        player1.pitch(pitchSelected, locationSelected);
-        moveBall(horMovement, vertMovement, pitchSelected.duration);
-        opponentHitting();
+        player1.badPitch(pitchSelected, locationSelected);
       }
     });
   };
   thrownPitch();
 };
-//Thanks to Joshua at stackOverflow for showing how to chain animations with queue: false. http://stackoverflow.com/questions/1251300/how-to-run-two-jquery-animations-simultaneously
+
 var setBall = function(horizontal, vertical){
   var horRand = horizontal + Math.floor(Math.random()*70);
   var vertRand;
@@ -619,10 +668,18 @@ var setBall = function(horizontal, vertical){
     $('#wiffleBall').css('top', vertRand);
   }
 };
+
+//Thanks to Joshua at stackOverflow for showing how to chain animations with queue: false. http://stackoverflow.com/questions/1251300/how-to-run-two-jquery-animations-simultaneously
 var moveBall = function(horizontal, vertical, speed){
   $('#wiffleBall').animate({left: horizontal}, {duration: speed, queue: false});
   $('#wiffleBall').animate({top: vertical}, {duration: speed, queue: false});
   $('#wiffleBall').animate({fontSize: "32px"}, {duration: speed, queue: false});
+  if (whoHitting() === player1){
+    playerHitting();
+  }
+  else{
+  setTimeout(opponentHitting,1500);
+}
 };
 
 var resetBall = function(){
@@ -636,6 +693,7 @@ var opponentPitching = function(){
   var pitchSelected = "";
   var locationSelected = "";
   var pitchSelector = Math.random();
+  var goodOrBad = Math.random();
   //set opponent Pitch
   if(pitchSelector < 0.5){
     pitchSelected = opponent.pitches[0];
@@ -650,12 +708,12 @@ var opponentPitching = function(){
   else{
     locationSelected = "High";
   }
-  setBall(75, locationSelected);
-  var horMovement = $('#wiffleBall').position().left + pitchSelected.horizontalMovement;
-  var vertMovement = $('#wiffleBall').position().top + pitchSelected.verticalMovement;
-  moveBall(horMovement, vertMovement, pitchSelected.duration);
-  opponent.pitch(pitchSelected, locationSelected);
-  playerHitting();
+  if(goodOrBad <= 0.5){
+    opponent.goodPitch(pitchSelected, locationSelected);
+  }
+  else{
+    opponent.badPitch(pitchSelected, locationSelected);
+  }
 };
 
 var playerHitting = function(){
@@ -781,20 +839,6 @@ var opponentHitting = function(){
 }
 };
 
-var updateStrikes = function(){
-  $('#strikes').html(strikes);
-};
-updateStrikes();
-
-var updateBalls = function(){
-  $('#balls').html(balls);
-};
-updateBalls();
-
-var updateOuts = function(){
-  $('#outs').html(outs);
-};
-updateOuts();
 
 var updateBatter = function(batter){
   $('#batter').html(batter.name);
@@ -817,8 +861,6 @@ var checkStrikes = function(){
     outs++;
     strikes = 0;
     balls = 0;
-    updateOuts();
-    updateStrikes();
     checkOuts();
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
@@ -827,15 +869,17 @@ var checkStrikes = function(){
     if(strikes === 2){
       addStrikes($('#strikes2'));
     }
-    if(strikes === 1){
+    else if(strikes === 1){
       addStrikes($('#strikes1'));
     }
     $('<button/>', {
       class: "btn btn-default btn-sm",
       text: "Next Pitch",
       click: function () {
+        resetBall();
+        $('#nextOn').html("");
         whoPitching();},
-              }).appendTo("#text-area");
+      }).appendTo("#nextOn");
   }
 };
 
@@ -856,26 +900,26 @@ var checkBalls = function(){
     $("<h1> Batter Walks.</h1>").appendTo("#text-area");
     balls = 0;
     strikes = 0;
-    updateBalls();
-    updateStrikes();
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
   }
-  if (balls === 3){
+  else if (balls === 3){
     addBalls($('#balls3'));
   }
-  if (balls === 2){
+  else if (balls === 2){
     addBalls($('#balls2'));
   }
-  if (balls === 1){
+  else if (balls === 1){
     addBalls($('#balls1'));
   }
   $('<button/>', {
     class: "btn btn-default btn-sm",
     text: "Next Pitch",
     click: function () {
+      resetBall();
+      $('#nextOn').html("");
       whoPitching();},
-            }).appendTo("#text-area");
+    }).appendTo("#nextOn");
 };
 
 var checkOuts = function(){
@@ -885,9 +929,6 @@ var checkOuts = function(){
     strikes = 0;
     balls = 0;
     baseRunnerReset();
-    updateOuts();
-    updateStrikes();
-    updateBalls();
     updateBaseDisplay();
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
@@ -897,38 +938,44 @@ var checkOuts = function(){
       class: "btn btn-default btn-sm",
       text: "Switch Sides",
       click: function () {
+        $('#nextOn').html("");
         resetBall();
         checkX(x);},
-              }).appendTo("#text-area");
+      }).appendTo("#nextOn");
   }
   else{
     strikes = 0;
     balls = 0;
-    updateStrikes();
-    updateBalls();
     $('span').removeClass('ballOn');
     $('span').removeClass('strikeOn');
     $('<button/>', {
       class: "btn btn-default btn-sm",
       text: "Shake Hands and say 'good game'.",
       click: function () {
+        $('#nextOn').html("");
         checkX(x);},
-              }).appendTo("#text-area");
+      }).appendTo("#nextOn");
   }
 }
   else{
     if(outs === 2){
       addOuts($('#outs2'));
     }
-    if(outs === 1){
+    else if(outs === 1){
       addOuts($('#outs1'));
     }
+    strikes = 0;
+    balls = 0;
+    $('span').removeClass('ballOn');
+    $('span').removeClass('strikeOn');
     $('<button/>', {
       class: "btn btn-default btn-sm",
       text: "Next Pitch",
       click: function () {
-        whoPitching();},
-              }).appendTo("#text-area");
+        resetBall();
+        $('#nextOn').html("");
+      whoPitching();},
+      }).appendTo("#nextOn");
   }
 };
 
@@ -937,7 +984,8 @@ var whoPitching = function(){
     playerPitching();
   }
   else{
-    opponentPitching();
+    //give player time to react before pitch thrown
+    setTimeout(opponentPitching,750);
   }
 };
 
@@ -956,7 +1004,7 @@ var halfInning = function(pitcher, batter){
     playerPitching();
   }
   else{
-  opponentPitching();
+  setTimeout(opponentPitching,750);
   }
 };
 
