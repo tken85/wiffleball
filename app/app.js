@@ -1042,7 +1042,7 @@ var winOrLose = function(){
   else{
     $('#text-area').html("You tied. How disappointing...");
   }
-
+  sendScore();
 };
 
 var highScores = {};
@@ -1056,6 +1056,7 @@ var getHighScores = function(){
       highScores = data;
       var sortedScores = _(highScores).chain().sortBy('score').reverse().value();
       var num = 1;
+      $('#text-area').append('<h1>High Scores</h1>');
       _.each(sortedScores, function(currVal, idx, arr){
         $('#text-area').append(num + "- " + currVal.username + " " + currVal.score + '<br>');
         num++;
@@ -1064,11 +1065,11 @@ var getHighScores = function(){
   });
 };
 
-var sendScore = function(player){
+var sendScore = function(){
   $.ajax({
     method: 'POST',
     url: '/addScore',
-    data: JSON.stringify({username: player.name, score: player.runs}),
+    data: JSON.stringify({username: player1.name, score: player1.runs}),
     dataType: "json",
     contentType: "application/json",
     success: function(data){
